@@ -1,10 +1,9 @@
 import { getActiveTabURL } from "./utils.js";
 
-// Adding a new bookmark row to the popup
 const addNewBookmark = (bookmarks, bookmark) => {
     const bookmarkTitleElement = document.createElement("div");
     const controlsElement = document.createElement('div');
-    const noteElement = document.createElement('input'); // Create the noteElement
+    const newBookmarkElement = document.createElement("div");
 
     bookmarkTitleElement.textContent = bookmark.desc;
     bookmarkTitleElement.className = "bookmark-title";
@@ -13,12 +12,11 @@ const addNewBookmark = (bookmarks, bookmark) => {
     setBookmarkAttributes("play", onPlay, controlsElement);
     setBookmarkAttributes("delete", onDelete, controlsElement);
 
-    noteElement.type = 'text'; // Set the input type to text
+    const noteElement = document.createElement('input');
+    noteElement.type = 'text';
     noteElement.className = 'bookmark-note';
-    noteElement.placeholder = 'Add a note...'; // Add a placeholder for the input field
-    noteElement.value = bookmark.note || ''; // Populate the input field with the saved note if available
-
-    const newBookmarkElement = document.createElement("div"); // Create the newBookmarkElement
+    noteElement.placeholder = 'Add a note...';
+    noteElement.value = bookmark.note || '';
 
     newBookmarkElement.id = "bookmark-" + bookmark.time;
     newBookmarkElement.className = "bookmark";
@@ -26,7 +24,7 @@ const addNewBookmark = (bookmarks, bookmark) => {
 
     newBookmarkElement.appendChild(bookmarkTitleElement);
     newBookmarkElement.appendChild(controlsElement);
-    newBookmarkElement.appendChild(noteElement); // Append the note input field to the bookmark element
+    newBookmarkElement.appendChild(noteElement);
 
     bookmarks.appendChild(newBookmarkElement);
 };
@@ -41,23 +39,21 @@ const viewBookmarks = (currentBookmarks = []) => {
             addNewBookmark(bookmarksElement, bookmark);
         }
     } else {
-        // Check that this message is displayed when there are no bookmarks
         bookmarksElement.innerHTML = '<i class="row">No bookmarks to show</i>';
     }
 
-    console.log("Bookmarks have been displayed.");
     return;
 };
 
 const onPlay = async (e) => {
     const bookmarkTime = e.target.parentNode.parentNode.getAttribute("timestamp");
-    const bookmarkNote = e.target.parentNode.parentNode.querySelector(".bookmark-note").value; // Get the note input value
+    const bookmarkNote = e.target.parentNode.parentNode.querySelector(".bookmark-note").value;
     const activeTab = await getActiveTabURL();
 
     chrome.tabs.sendMessage(activeTab.id, {
         type: "PLAY",
         value: bookmarkTime,
-        note: bookmarkNote, // Pass the note along with the timestamp
+        note: bookmarkNote,
     });
 };
 
@@ -91,27 +87,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const currentVideo = urlParameters.get("v");
 
     if (activeTab.url.includes("youtube.com/watch") && currentVideo) {
-        const container = document.getElementsByClassName("container")[0];
+        chrome.storage.sync.get([currentVideo], (data) => {
+            const currentVideoBookmarks = data[currentVideo] ? JSON.parse(data[currentVideo]) : [];
 
-        bookmarkButton.addEventListener("click", () => {
-            // Code to create a bookmark here
-            const bookmark = {
-                desc: "Your Bookmark", // Customize this description
-                note: "", // You can add a note here if needed
-            };
-        
-            addNewBookmark(currentVideoBookmarks, bookmark);
-        
-            // After adding the bookmark, update the view
             viewBookmarks(currentVideoBookmarks);
         });
-
-        container.innerHTML = ''; // Clear any existing content
-        container.appendChild(bookmarkButton); // Append the bookmark button
-        viewBookmarks(currentVideoBookmarks);
     } else {
         const container = document.getElementsByClassName("container")[0];
         container.innerHTML = '<div class="title">This is not a YouTube video page.</div>';
     }
 });
-
