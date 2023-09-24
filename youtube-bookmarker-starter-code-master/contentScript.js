@@ -10,12 +10,14 @@
         });
       });
     };
-  
+    
     const addNewBookmarkEventHandler = async () => {
       const currentTime = youtubePlayer.currentTime;
+      const note = prompt("Add a note for this bookmark:"); // Prompt the user for a note
       const newBookmark = {
         time: currentTime,
         desc: "Bookmark at " + getTime(currentTime),
+        note: note, // Store the note in the bookmark object
       };
   
       currentVideoBookmarks = await fetchBookmarks();
