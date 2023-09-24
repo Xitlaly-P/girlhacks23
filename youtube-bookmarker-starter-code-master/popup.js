@@ -3,19 +3,22 @@ import {getActiveTabURL} from "./utils.js";
 // adding a new bookmark row to the popup
 const addNewBookmark = (bookmarksElement, bookmark) => {
     const bookmarkTitleElement = document.createElement("div");
-    const newBookmarkElement = document.createElement("div");
     const controlsElement = document.createElement('div');
+    const newBookmarkElement = document.createElement("div");
+    
 
     bookmarkTitleElement.textContent = bookmark.desc;
     bookmarkTitleElement.className = "bookmark-title";
     controlsElement.className ="bookmark-controls";
 
+    setBookmarkAttributes("play", onPlay, controlsElement);
+    setBookmarkAttributes("delete", onDelete, controlsElement);
+
     newBookmarkElement.id = "bookmark-"+bookmark.time;
     newBookmarkElement.className = "bookmark";
     newBookmarkElement.setAttribute("timestamp",bookmark.time);
 
-    setBookmarkAttributes("play", onPlay, controlsElement);
-    setBookmarkAttributes("delete", onDelete, controlsElement);
+    
 
     newBookmarkElement.appendChild(bookmarkTitleElement);
     newBookmarkElement.appendChild(controlsElement);
@@ -35,6 +38,8 @@ const viewBookmarks = (currentBookmarks = []) => {
     }else{
         bookmarksElement.innerHTML = '<i class="row">No bookmarks to show</i>'
     }
+
+    return;
 };
 
 const onPlay = async e => {
@@ -81,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const currentVideoBookmarks= data[currentVideo] ? JSON.parse(data[currentVideo]): [];
             
             viewBookmarks(currentVideoBookmarks);
-        })
+        });
     } else{
         const container = document.getElementsByClassName("container")[0];
 
