@@ -1,7 +1,7 @@
 import {getActiveTabURL} from "./utils.js";
 
 // adding a new bookmark row to the popup
-const addNewBookmark = (bookmarksElement, bookmark) => {
+const addNewBookmark = (bookmarks, bookmark) => {
     const bookmarkTitleElement = document.createElement("div");
     const controlsElement = document.createElement('div');
     const newBookmarkElement = document.createElement("div");
@@ -22,7 +22,7 @@ const addNewBookmark = (bookmarksElement, bookmark) => {
 
     newBookmarkElement.appendChild(bookmarkTitleElement);
     newBookmarkElement.appendChild(controlsElement);
-    bookmarksElement.appendChild(newBookmarkElement);
+    bookmarks.appendChild(newBookmarkElement);
 };
 
 

@@ -1,6 +1,7 @@
 .container {
   width: 280px;
-  color: #314d3e;
+  background-image: linear-gradient( 99.9deg, rgba(27,24,31,1) 21.2%, rgba(50,4,89,1) 84.8% );
+  color: white;
 }
 
 .title {
