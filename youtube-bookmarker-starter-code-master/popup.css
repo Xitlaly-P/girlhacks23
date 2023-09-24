@@ -53,3 +53,12 @@
   flex: auto;
   text-align: right;
 }
+
+.bookmark-btn-hover {
+  /* Define the styles for the hover effect here */
+  /* For example, you can change the background color or replace the image
+  background-color: #ffcc00;  Change the background color on hover */
+  /* You can also replace the image with starhover.png */
+  background-image: url('./assets/starhov.png'); /* Replace 'starhover.png' with the actual path to your starhover.png image */
+  /* Add any other hover-specific styles you want */
+}

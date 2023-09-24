@@ -36,12 +36,23 @@
         bookmarkBtn.src = chrome.runtime.getURL("assets/star.png");
         bookmarkBtn.className = "ytp-button " + "bookmark-btn";
         bookmarkBtn.title = "Click to bookmark current timestamp";
+
+        // Add a new class for the hover state
+        bookmarkBtn.classList.add("bookmark-btn-hover");
   
         youtubeLeftControls = document.getElementsByClassName("ytp-left-controls")[0];
         youtubePlayer = document.getElementsByClassName('video-stream')[0];
   
         youtubeLeftControls.appendChild(bookmarkBtn);
         bookmarkBtn.addEventListener("click", addNewBookmarkEventHandler);
+
+        // Add a hover event listener to toggle the hover class
+        bookmarkBtn.addEventListener("mouseenter", () => {
+            bookmarkBtn.src = chrome.runtime.getURL("assets/starhov.png");
+          });
+          bookmarkBtn.addEventListener("mouseleave", () => {
+            bookmarkBtn.src = chrome.runtime.getURL("assets/star.png");
+          });
       }
     };
   
